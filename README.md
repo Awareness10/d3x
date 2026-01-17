@@ -5,51 +5,12 @@ Data-oriented orbital mechanics simulation framework. C++ core for performance, 
 ## Dependencies
 
 <!-- DEPENDENCIES -->
-* attrs
-* cfgv
-* contourpy
-* cycler
 * d3x
-* distlib
-* filelock
-* fonttools
-* gherkin-official
 * glcontext
 * glfw
-* identify
-* iniconfig
-* kiwisolver
-* mako
-* markdown-it-py
-* markupsafe
-* matplotlib
-* mdurl
 * moderngl
-* nodeenv
 * numpy
-* packaging
-* parse
-* parse-type
-* pillow
-* platformdirs
-* pluggy
-* pre-commit
-* pybind11-stubgen
 * pyglm
-* pygments
-* pyparsing
-* pytest
-* pytest-bdd
-* pytest-rich
-* pytest-sugar
-* python-dateutil
-* pyyaml
-* rich
-* ruff
-* six
-* termcolor
-* typing-extensions
-* virtualenv
 <!-- /DEPENDENCIES -->
 
 ## Installation
@@ -59,11 +20,8 @@ Data-oriented orbital mechanics simulation framework. C++ core for performance, 
 # Install with uv (recommended)
 uv sync --dev
 
-# Legacy install (pip)
+# Alternative legacy install (pip)
 pip install -e ".[dev]"
-
-# Run tests
-uv run pytest
 
 # Run visualization example
 uv run python examples/earth_moon.py
@@ -74,18 +32,40 @@ uv run python examples/earth_moon.py
 
 ```python
 import d3x
+from d3x.viz import Viewer
 
-# Create simulation
 world = d3x.World()
-world.add_body(pos=(0, 0, 0), vel=(0, 0, 0), mass=d3x.constants.M_SOL)
-world.add_body(pos=(d3x.constants.AU, 0, 0), vel=(0, 29780, 0), mass=d3x.constants.M_EARTH)
 
-# Simulate 24 hours (1-hour steps)
-for _ in range(24):
-    d3x.step_rk4(world, 3600)
+# Sun at origin
+world.add_body(pos=(0, 0, 0), vel=(0, 0, 0), mass=d3x.constants.M_SUN)
 
-print(f"Earth position: {world.px[1]:.3e} m")
-print(f"Energy conserved: {world.total_energy():.6e} J")
+# Planetary data: (name, semi-major axis [AU], orbital velocity [m/s], mass [kg])
+planets = [
+    ("Mercury", 0.387, 47870, 3.285e23),
+    ("Venus", 0.723, 35020, 4.867e24),
+    ("Earth", 1.000, 29780, 5.972e24),
+    ("Mars", 1.524, 24070, 6.417e23),
+]
+
+for _name, au, vel, mass in planets:
+    r = au * d3x.constants.AU
+    world.add_body(pos=(r, 0, 0), vel=(0, vel, 0), mass=mass)
+
+dt, steps_per_frame = (60*60, 24)
+
+print("D3X Inner Solar System")
+print(f"Bodies: Sun + {len(planets)} planets")
+print(f"Speed: {steps_per_frame}\n")
+
+print("Controls: Left-drag=orbit, Scroll=zoom, R=reset, Space=pause, ESC=exit\n")
+
+with Viewer(world, title="Inner Solar System", trail_length=800) as viewer:
+    while viewer.running:
+        if not viewer.paused:
+            for _ in range(steps_per_frame):
+                d3x.step_rk4(world, dt)
+
+        viewer.update()
 ```
 
 <!-- API -->

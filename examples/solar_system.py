@@ -7,9 +7,9 @@ import d3x
 from d3x.viz import Viewer
 
 SPEED_PRESETS = {
-    "slow": (43200.0, 1, "1 Earth year in ~12 min"),
-    "normal": (86400.0, 2, "1 Earth year in ~3 min"),
-    "fast": (172800.0, 4, "1 Earth year in ~45 sec"),
+    "slow": (60, 24, ""),
+    "normal": (3600, 24, ""),
+    "fast": (7200, 24, ""),
 }
 
 

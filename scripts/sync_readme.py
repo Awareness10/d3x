@@ -48,11 +48,8 @@ def generate_install() -> str:
 # Install with uv (recommended)
 uv sync --dev
 
-# Legacy install (pip)
+# Alternative legacy install (pip)
 pip install -e ".[dev]"
-
-# Run tests
-uv run pytest
 
 # Run visualization example
 uv run python examples/earth_moon.py

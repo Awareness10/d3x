@@ -10,19 +10,18 @@ dependencies = [
     "moderngl>=5.12.0",
     "glfw>=2.10.0",
     "PyGLM>=2.7",
-    "pytest>=9.0.2",
-    "pytest-bdd>=8.0",
-    "pytest-rich>=0.2.0",
-    "pytest-sugar>=1.1.1",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0",
     "matplotlib>=3.9",
     "pybind11-stubgen>=2.5",
     "ruff>=0.8",
     "pre-commit>=4.0",
+    "pytest>=9.0.2",
+    "pytest-bdd>=8.0",
+    "pytest-rich>=0.2.0",
+    "pytest-sugar>=1.1.1",
 ]
 
 [build-system]
