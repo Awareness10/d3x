@@ -1,0 +1,32 @@
+# Build artifacts
+build/
+dist/
+*.egg-info/
+*.so
+*.pyd
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.uv/
+
+# C++
+*.o
+*.a
+compile_commands.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Generated stubs (kept in repo but regenerated on build)
+# src/d3x/_core.pyi
+
+# OS
+.DS_Store
+
+# Other
+*.md
+!README.md

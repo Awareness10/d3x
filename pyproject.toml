@@ -1,0 +1,62 @@
+[project]
+name = "d3x"
+version = "0.1.0"
+description = "Data-oriented orbital mechanics simulation framework"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = [
+    "numpy>=2.0",
+    "moderngl>=5.12.0",
+    "glfw>=2.10.0",
+    "PyGLM>=2.7",
+    "pytest>=9.0.2",
+    "pytest-bdd>=8.0",
+    "pytest-rich>=0.2.0",
+    "pytest-sugar>=1.1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "matplotlib>=3.9",
+    "pybind11-stubgen>=2.5",
+    "ruff>=0.8",
+    "pre-commit>=4.0",
+]
+
+[build-system]
+requires = ["scikit-build-core>=0.10", "pybind11>=2.13"]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+wheel.packages = ["src/d3x"]
+cmake.build-type = "Release"
+build-dir = "build/{wheel_tag}"
+
+[tool.scikit-build.cmake.define]
+CMAKE_EXPORT_COMPILE_COMMANDS = "ON"
+
+[tool.pytest.ini_options]
+testpaths = ["tests/python", "tests/step_defs"]
+addopts = "-v --showlocals -q"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+]
+
+[tool.ruff.format]
+quote-style = "double"
