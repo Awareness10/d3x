@@ -48,8 +48,11 @@ jobs:
         run: uv build
 
       - name: Upload wheel
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.python-version == '3.11'
+        # Only upload on master pushes to avoid duplicate artifacts on PRs
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v4
         with:
-          name: wheel-linux-py${{ matrix.python-version }}
-          path: dist/d3x-*.whl
+          # Result: d3x-py3.12-linux_x86_64
+          name: d3x-py${{ matrix.python-version }}-linux_x86_64
+          path: dist/*.whl
+          if-no-files-found: error
